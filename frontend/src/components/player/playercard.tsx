@@ -1,12 +1,4 @@
-type Player = {
-  id: number
-  name: string
-  club: string
-  position: string
-  age: number
-  rating: number
-}
-
+import type { Player } from '../../types/player'
 type PlayerCardProps = {
   player: Player
   isSelected: boolean
