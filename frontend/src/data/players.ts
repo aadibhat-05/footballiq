@@ -19,6 +19,13 @@ export const players: Player[] = [
     nationality: 'Spain',
     preferredFoot: 'Right',
     marketValue: '€120M',
+    attributes: {
+  passing: 94,
+  dribbling: 91,
+  defending: 72,
+  physical: 68,
+  vision: 95,
+},
   },
   {
     id: 2,
@@ -39,6 +46,13 @@ export const players: Player[] = [
     nationality: 'Spain',
     preferredFoot: 'Right',
     marketValue: '€110M',
+    attributes: {
+  passing: 90,
+  dribbling: 82,
+  defending: 93,
+  physical: 88,
+  vision: 89,
+},
   },
   {
     id: 3,
@@ -59,5 +73,12 @@ export const players: Player[] = [
     nationality: 'Germany',
     preferredFoot: 'Right',
     marketValue: '€140M',
+    attributes: {
+  passing: 86,
+  dribbling: 96,
+  defending: 58,
+  physical: 74,
+  vision: 88,
+},
   },
 ]

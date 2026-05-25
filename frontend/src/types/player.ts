@@ -11,4 +11,11 @@ export type Player = {
   nationality: string
   preferredFoot: string
   marketValue: string
+  attributes: {
+    passing: number
+    dribbling: number
+    defending: number
+    physical: number
+    vision: number
+  }
 }

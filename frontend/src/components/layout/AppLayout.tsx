@@ -1,5 +1,5 @@
 import AppSidebar from './AppSidebar'
-import Topbar from './Topbar'
+import Navbar from './Navbar'
 
 type AppLayoutProps = {
   children: React.ReactNode
@@ -11,7 +11,7 @@ function AppLayout({ children }: AppLayoutProps) {
       <AppSidebar />
 
       <div className="flex flex-1 flex-col">
-        <Topbar />
+        <Navbar />
 
         <main className="flex-1 overflow-y-auto p-6">
           {children}
