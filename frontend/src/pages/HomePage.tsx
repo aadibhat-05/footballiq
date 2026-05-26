@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import PlayerCard from '../components/player/playercard'
-import { players } from '../data/players'
-import StatsCard from '../components/dashboard/StatsCard'
+
 import PlayerAnalysisPanel from '../components/dashboard/PlayerAnalysisPanel'
+import StatsCard from '../components/dashboard/StatsCard'
+import PlayerCard from '../components/player/playercard'
+
+import { players } from '../data/players'
 
 function HomePage() {
   const [selectedPlayerId, setSelectedPlayerId] =
@@ -10,30 +12,96 @@ function HomePage() {
 
   const [comparePlayerId, setComparePlayerId] =
     useState<number | null>(null)
+
   const [searchQuery, setSearchQuery] =
     useState('')
+
+  const [selectedPosition, setSelectedPosition] =
+    useState('All')
+
+  const [sortOption, setSortOption] =
+    useState('Highest Rated')  
+
   const selectedPlayer =
     players.find(
       (player) => player.id === selectedPlayerId
     ) || players[0]
+
+  const positions = [
+    'All',
+    'Central Midfielder',
+    'Defensive Midfielder',
+    'Attacking Midfielder',
+  ]
+  
+  const sortOptions = [
+    'Highest Rated',
+    'Youngest',
+    'Highest Market Value',
+    'Alphabetical'
+  ]
+
   const filteredPlayers = players.filter(
-  (player) =>
-    player.name
-      .toLowerCase()
-      .includes(
-        searchQuery.toLowerCase()
-      ) ||
-      player.club
-      .toLowerCase()
-      .includes(
-        searchQuery.toLowerCase()
-      ) ||
-      player.position
-      .toLowerCase()
-      .includes(
-        searchQuery.toLowerCase()
+    (player) => {
+      const matchesSearch =
+        player.name
+          .toLowerCase()
+          .includes(
+            searchQuery.toLowerCase()
+          ) ||
+        player.club
+          .toLowerCase()
+          .includes(
+            searchQuery.toLowerCase()
+          ) ||
+        player.position
+          .toLowerCase()
+          .includes(
+            searchQuery.toLowerCase()
+          )
+
+      const matchesPosition =
+        selectedPosition === 'All' ||
+        player.position ===
+          selectedPosition
+
+      return (
+        matchesSearch &&
+        matchesPosition
       )
+    }
   )
+  .sort((a, b) => {
+    switch(sortOption){
+      case 'Highest Rated':
+        return b.rating - a.rating
+
+      case 'Youngest':
+        return a.age - b.age
+
+      case 'Highest Market Value':
+        return (
+          parseInt(
+            b.marketValue.replace(
+              /\D/g,
+              ''
+            )
+          ) -
+          parseInt(
+            a.marketValue.replace(
+              /\D/g,
+              ''
+            )
+          )
+        )
+      case 'Alphabetical':
+        return a.name.localeCompare(
+          b.name
+        )
+      default:
+        return 0
+    }
+  })
 
   return (
     <div className="space-y-8">
@@ -48,21 +116,70 @@ function HomePage() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-lg text-gray-400">
-          Analyze elite football talent, compare tactical
-          profiles, and build data-driven scouting reports.
+          Analyze elite football talent,
+          compare tactical profiles,
+          and build data-driven scouting reports.
         </p>
-      </div>
-      <div className="mt-6">
-        <input
-        type="text"
-        placeholder="Search players, clubs, positions..."
-        value={searchQuery}
-        onChange={(e) =>
-          setSearchQuery(e.target.value)
-        }
-        className="w-full rounded-2xl border border-gray-800 bg-gray-950 px-5 py-4 text-white outline-none transition focus:border-green-400"
-        />
+
+        {/* SEARCH */}
+        <div className="mt-6">
+          <input
+            type="text"
+            placeholder="Search players, clubs, positions..."
+            value={searchQuery}
+            onChange={(e) =>
+              setSearchQuery(e.target.value)
+            }
+            className="w-full rounded-2xl border border-gray-800 bg-gray-950 px-5 py-4 text-white outline-none transition focus:border-green-400"
+          />
         </div>
+
+        {/* POSITION FILTERS */}
+        <div className="mt-4 flex flex-wrap gap-3">
+          {positions.map((position) => (
+            <button
+              key={position}
+              onClick={() =>
+                setSelectedPosition(position)
+              }
+              className={`
+                rounded-xl
+                border
+                px-4
+                py-2
+                text-sm
+                transition
+                ${
+                  selectedPosition ===
+                  position
+                    ? 'border-green-400 bg-green-500/10 text-green-400'
+                    : 'border-gray-800 bg-gray-950 text-gray-300 hover:border-gray-700'
+                }
+              `}
+            >
+              {position}
+            </button>
+          ))}
+        </div>
+        <div className="mt-4">
+          <select
+            value={sortOption}
+            onChange={(e) =>
+              setSortOption(e.target.value)
+            }
+            className="rounded-xl border border-gray-800 bg-gray-950 px-4 py-3 text-sm text-white outline-none transition focus:border-green-400"
+          >
+            {sortOptions.map((option) => (
+              <option
+                key={option}
+                value={option}
+              >
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* STATS */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -120,17 +237,19 @@ function HomePage() {
               }
             />
           ))}
-          {filteredPlayers.length === 0 && (
- <div className="rounded-2xl border border-gray-800 bg-gray-950 p-10 text-center">
-    <p className="text-lg font-medium text-white">
-      No players found
-    </p>
 
-    <p className="mt-2 text-sm text-gray-400">
-      Try adjusting your search query
-    </p>
-  </div>
-)}
+          {/* EMPTY STATE */}
+          {filteredPlayers.length === 0 && (
+            <div className="rounded-2xl border border-gray-800 bg-gray-950 p-10 text-center">
+              <p className="text-lg font-medium text-white">
+                No players found
+              </p>
+
+              <p className="mt-2 text-sm text-gray-400">
+                Try adjusting your search query
+              </p>
+            </div>
+          )}
         </div>
 
         {/* ANALYSIS PANEL */}
@@ -143,4 +262,5 @@ function HomePage() {
     </div>
   )
 }
+
 export default HomePage
