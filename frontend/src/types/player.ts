@@ -8,6 +8,7 @@ export type Player = {
   scoutingReport: string
   strengths: string[]
   tacticalRole: string
+  archetype: string
   nationality: string
   preferredFoot: string
   marketValue: string

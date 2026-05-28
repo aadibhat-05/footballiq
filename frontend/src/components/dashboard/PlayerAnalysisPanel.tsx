@@ -264,7 +264,7 @@ function PlayerAnalysisPanel({
         </div>
       )}
 
-      {/* COMPARISON TAB */}
+            {/* COMPARISON TAB */}
       {activeTab === 'comparison' && (
         <div className="mt-8">
           <p className="text-sm uppercase tracking-widest text-gray-500">
@@ -322,6 +322,7 @@ function PlayerAnalysisPanel({
               </div>
 
               <div className="mt-6 space-y-4">
+                {/* RATING */}
                 <div>
                   <div className="mb-2 flex items-center justify-between text-sm">
                     <span className="text-green-400">
@@ -358,6 +359,7 @@ function PlayerAnalysisPanel({
                   </div>
                 </div>
 
+                {/* AGE */}
                 <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-950 px-4 py-3">
                   <span className="font-medium text-white">
                     {selectedPlayer.age}
@@ -372,6 +374,7 @@ function PlayerAnalysisPanel({
                   </span>
                 </div>
 
+                {/* NATIONALITY */}
                 <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-950 px-4 py-3">
                   <span className="font-medium text-white">
                     {selectedPlayer.nationality}
@@ -386,6 +389,7 @@ function PlayerAnalysisPanel({
                   </span>
                 </div>
 
+                {/* ROLE */}
                 <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-950 px-4 py-3">
                   <span className="max-w-[120px] text-sm font-medium text-white">
                     {selectedPlayer.tacticalRole}
@@ -398,6 +402,85 @@ function PlayerAnalysisPanel({
                   <span className="max-w-[120px] text-right text-sm font-medium text-white">
                     {comparePlayer.tacticalRole}
                   </span>
+                </div>
+
+                {/* ATTRIBUTE COMPARISON */}
+                <div className="rounded-2xl border border-gray-800 bg-gray-950 p-5">
+                  <p className="mb-5 text-sm uppercase tracking-widest text-gray-500">
+                    Attribute Comparison
+                  </p>
+
+                  <div className="space-y-5">
+                    {ATTRIBUTES.map((attribute) => {
+                      const selectedValue =
+                        selectedPlayer.attributes[
+                          attribute
+                        ]
+
+                      const compareValue =
+                        comparePlayer.attributes[
+                          attribute
+                        ]
+
+                      const selectedWins =
+                        selectedValue >
+                        compareValue
+
+                      const compareWins =
+                        compareValue >
+                        selectedValue
+
+                      return (
+                        <div key={attribute}>
+                          <div className="mb-2 flex items-center justify-between">
+                            <span
+                              className={`text-sm font-semibold ${
+                                selectedWins
+                                  ? 'text-green-400'
+                                  : 'text-gray-300'
+                              }`}
+                            >
+                              {selectedValue}
+                            </span>
+
+                            <span className="capitalize text-sm text-gray-500">
+                              {attribute}
+                            </span>
+
+                            <span
+                              className={`text-sm font-semibold ${
+                                compareWins
+                                  ? 'text-blue-400'
+                                  : 'text-gray-300'
+                              }`}
+                            >
+                              {compareValue}
+                            </span>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-800">
+                              <div
+                                className="h-full rounded-full bg-green-400"
+                                style={{
+                                  width: `${selectedValue}%`,
+                                }}
+                              />
+                            </div>
+
+                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-800">
+                              <div
+                                className="h-full rounded-full bg-blue-400"
+                                style={{
+                                  width: `${compareValue}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
             </div>

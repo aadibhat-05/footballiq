@@ -16,6 +16,7 @@ export const players: Player[] = [
 ],
     tacticalRole:
   'Advanced Playmaker',
+    archetype: 'Press Resistant Controller',
     nationality: 'Spain',
     preferredFoot: 'Right',
     marketValue: '€120M',
@@ -43,6 +44,7 @@ export const players: Player[] = [
 ],
     tacticalRole:
   'Deep-Lying Playmaker',
+    archetype: 'Deep Playmaker',
     nationality: 'Spain',
     preferredFoot: 'Right',
     marketValue: '€110M',
@@ -70,6 +72,7 @@ export const players: Player[] = [
 ],
     tacticalRole:
   'Creative Attacking Midfielder',
+    archetype: 'Creative 10',
     nationality: 'Germany',
     preferredFoot: 'Right',
     marketValue: '€140M',

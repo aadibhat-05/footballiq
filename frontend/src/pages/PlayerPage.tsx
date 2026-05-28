@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import AttributeRadar from '../components/dashboard/AttributeRadar'
 import { players } from '../data/players'
+import { generateScoutReport } from '../utils/generateScoutReport'
 function PlayerPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -23,6 +24,8 @@ function PlayerPage() {
     currentIndex < players.length - 1
       ? players[currentIndex + 1]
       : null
+  const generatedInsights =
+    generateScoutReport(player)
   if (!player) {
     return (
       <div className="p-10 text-white">
@@ -99,6 +102,14 @@ function PlayerPage() {
         </div>
         <div className="rounded-2xl border border-gray-800 bg-gray-950 p-6">
           <p className="text-sm text-gray-500">
+            Archetype
+          </p>
+          <p className="mt-2 text-lg font-semibold text-green-400">
+            {player.archetype}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-gray-800 bg-gray-950 p-6">
+          <p className="text-sm text-gray-500">
             Market Value
           </p>
           <p className="mt-2 text-lg font-semibold text-green-400">
@@ -114,23 +125,24 @@ function PlayerPage() {
           </p>
         </div>
       </div>
-      {/* SCOUTING REPORT */}
+      {/* AI SCOUT INSIGHTS */}
       <div className="rounded-2xl border border-gray-800 bg-gray-950 p-8">
         <p className="text-sm uppercase tracking-widest text-gray-500">
-          AI Scouting Report
+          AI Scout Insights
         </p>
-        <p className="mt-4 max-w-3xl leading-8 text-gray-300">
-          {player.scoutingReport}
-        </p>
-      </div>
-      {/* ATTRIBUTE RADAR */}
-      <div className="rounded-2xl border border-gray-800 bg-gray-950 p-8">
-        <p className="text-sm uppercase tracking-widest text-gray-500">
-          Attribute Radar
-        </p>
-
-        <div className="mt-6">
-          <AttributeRadar player={player} />
+        <div className="mt-5 space-y-4">
+          {generatedInsights.map(
+            (insight, index) => (
+              <div
+                key={index}
+                className="rounded-xl border border-gray-800 bg-gray-900 p-4"
+              >
+                <p className="leading-7 text-gray-300">
+                  {insight}
+                </p>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
