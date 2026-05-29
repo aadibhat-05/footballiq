@@ -18,6 +18,10 @@ function AttributeRadar({
 }: AttributeRadarProps) {
   const data = [
     {
+      axis: 'Pace',
+      value: player.attributes.pace,
+    },
+    {
       axis: 'Passing',
       value: player.attributes.passing,
     },
@@ -36,6 +40,10 @@ function AttributeRadar({
     {
       axis: 'Vision',
       value: player.attributes.vision,
+    },
+    {
+      axis: 'Shooting',
+      value: player.attributes.shooting,
     },
   ]
 

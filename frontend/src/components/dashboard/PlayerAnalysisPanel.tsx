@@ -9,11 +9,13 @@ type PlayerAnalysisPanelProps = {
 }
 
 const ATTRIBUTES = [
+  'pace',
   'passing',
   'dribbling',
   'defending',
   'physical',
   'vision',
+  'shooting',
 ] as const
 
 function PlayerAnalysisPanel({
@@ -490,5 +492,4 @@ function PlayerAnalysisPanel({
     </div>
   )
 }
-
 export default PlayerAnalysisPanel
