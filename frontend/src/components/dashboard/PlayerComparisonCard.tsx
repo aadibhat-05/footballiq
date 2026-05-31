@@ -1,6 +1,7 @@
 import type { Player } from '../../types/player'
 import { comparePlayers } from '../../utils/comparePlayers'
 import { generateComparisonSummary } from '../../utils/generateComparisonSummary'
+import { getOverallEdge } from '../../utils/getOverallEdge'
 
 type Props = {
   playerA: Player
@@ -31,6 +32,12 @@ function PlayerComparisonCard({
     generateComparisonSummary(
       playerA,
       playerB
+    )
+
+  const edge =
+    getOverallEdge(
+        playerA,
+        playerB
     )
 
   return (
@@ -77,6 +84,29 @@ function PlayerComparisonCard({
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/10 text-lg font-bold text-green-400">
             {getInitials(playerB.name)}
           </div>
+        </div>
+      </div>
+      
+      <div className="mt-8 rounded-xl border border-green-500/30 bg-green-500/5 p-5">
+        <p className="text-sm uppercase tracking-widest text-green-400">
+            Overall Edge
+        </p>
+        <p className="mt-3 text-2xl font-bold text-white">
+            {edge.winner
+              ? edge.winner.name
+              : 'Even Match'}
+        </p>
+        <div className="mt-4 space-y-2">
+            {edge.reasons.map(
+                (reason, index) => (
+                    <p
+                      key={index}
+                      className="text-sm text-gray-300"
+                    >
+                        ✓ {reason}
+                    </p>
+                )
+            )}
         </div>
       </div>
 

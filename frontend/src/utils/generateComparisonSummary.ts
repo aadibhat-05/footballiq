@@ -7,43 +7,103 @@ export function generateComparisonSummary(
   const strengthsA: string[] = []
   const strengthsB: string[] = []
 
-  const attributes = [
-    'pace',
-    'shooting',
-    'passing',
-    'dribbling',
-    'defending',
-    'physical',
-    'vision',
-  ] as const
+  if (
+    playerA.attributes.passing >
+      playerB.attributes.passing &&
+    playerA.attributes.vision >
+      playerB.attributes.vision
+  ) {
+    strengthsA.push(
+      'greater creativity and progression'
+    )
+  }
 
-  attributes.forEach((attribute) => {
-    const difference =
-      playerA.attributes[attribute] -
-      playerB.attributes[attribute]
+  if (
+    playerB.attributes.passing >
+      playerA.attributes.passing &&
+    playerB.attributes.vision >
+      playerA.attributes.vision
+  ) {
+    strengthsB.push(
+      'greater creativity and progression'
+    )
+  }
 
-    if (difference >= 5) {
-      strengthsA.push(attribute)
-    }
+  if (
+    playerA.attributes.dribbling >
+    playerB.attributes.dribbling
+  ) {
+    strengthsA.push(
+      'stronger ball carrying ability'
+    )
+  }
 
-    if (difference <= -5) {
-      strengthsB.push(attribute)
-    }
-  })
+  if (
+    playerB.attributes.dribbling >
+    playerA.attributes.dribbling
+  ) {
+    strengthsB.push(
+      'stronger ball carrying ability'
+    )
+  }
 
-  const aSummary =
+  if (
+    playerA.attributes.defending >
+      playerB.attributes.defending &&
+    playerA.attributes.physical >
+      playerB.attributes.physical
+  ) {
+    strengthsA.push(
+      'better defensive security'
+    )
+  }
+
+  if (
+    playerB.attributes.defending >
+      playerA.attributes.defending &&
+    playerB.attributes.physical >
+      playerA.attributes.physical
+  ) {
+    strengthsB.push(
+      'better defensive security'
+    )
+  }
+
+  if (
+    playerA.attributes.pace >
+      playerB.attributes.pace &&
+    playerA.attributes.shooting >
+      playerB.attributes.shooting
+  ) {
+    strengthsA.push(
+      'greater attacking threat'
+    )
+  }
+
+  if (
+    playerB.attributes.pace >
+      playerA.attributes.pace &&
+    playerB.attributes.shooting >
+      playerA.attributes.shooting
+  ) {
+    strengthsB.push(
+      'greater attacking threat'
+    )
+  }
+
+  const aText =
     strengthsA.length > 0
-      ? `${playerA.name} holds an advantage in ${strengthsA.join(
+      ? `${playerA.name} offers ${strengthsA.join(
           ', '
         )}.`
-      : `${playerA.name} does not possess any major attribute advantage.`
+      : ''
 
-  const bSummary =
+  const bText =
     strengthsB.length > 0
-      ? `${playerB.name} holds an advantage in ${strengthsB.join(
+      ? `${playerB.name} offers ${strengthsB.join(
           ', '
         )}.`
-      : `${playerB.name} does not possess any major attribute advantage.`
+      : ''
 
   let verdict = ''
 
@@ -55,8 +115,8 @@ export function generateComparisonSummary(
     verdict = `${playerB.name} currently projects as the stronger overall profile.`
   } else {
     verdict =
-      'Both players project at a very similar overall level.'
+      'Both players project at a similar overall level.'
   }
 
-  return `${aSummary} ${bSummary} ${verdict}`
+  return `${aText} ${bText} ${verdict}`
 }
