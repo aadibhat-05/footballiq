@@ -6,10 +6,11 @@ import {
 
 import AttributeRadar from '../components/dashboard/AttributeRadar'
 import SimilarPlayersPanel from '../components/dashboard/SimilarPlayersPanel'
-
 import { players } from '../data/players'
 import { generateScoutReport } from '../utils/generateScoutReport'
 import { getSimilarPlayers } from '../utils/getSimilarPlayers'
+import { useState } from 'react'
+import PlayerComparisonCard from '../components/dashboard/PlayerComparisonCard'
 
 function PlayerPage() {
   const { id } = useParams()
@@ -46,6 +47,16 @@ function PlayerPage() {
 
   const similarPlayers =
     getSimilarPlayers(player)
+
+  const [comparisonPlayerId, setComparisonPlayerId] =
+    useState<number>(
+      players.find((p) => p.id !== player.id)?.id || player.id
+    )
+
+  const comparisonPlayer =
+    players.find(
+      (p) => p.id === comparisonPlayerId
+    ) || player
 
   return (
     <div className="space-y-8 p-10 text-white">
@@ -181,6 +192,38 @@ function PlayerPage() {
       <SimilarPlayersPanel
         similarPlayers={similarPlayers}
       />
+
+      <div className="rounded-2xl border border-gray-800 bg-gray-950 p-8">
+        <p className="text-sm uppercase tracking-widest text-gray-500">
+          Compare Player
+        </p>
+        <select
+          value={comparisonPlayerId}
+          onChange={(e) =>
+            setComparisonPlayerId(
+              Number(e.target.value)
+            )
+          }
+          className="mt-4 w-full rounded-xl border border-gray-800 bg-gray-900 p-3 text-white"
+          >
+            {players
+              .filter((p) => p.id !== player.id)
+              .map((p) => (
+                <option
+                  key={p.id}
+                  value={p.id}
+                > 
+                  {p.name}
+                </option>
+              ))}
+          </select>
+          <div className="mt-6">
+            <PlayerComparisonCard
+              playerA={player}
+              playerB={comparisonPlayer}
+            />
+          </div>
+      </div>
 
       {/* ATTRIBUTE RADAR */}
       <div className="rounded-2xl border border-gray-800 bg-gray-950 p-8">
