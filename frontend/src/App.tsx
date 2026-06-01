@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
 import HomePage from './pages/HomePage'
 import PlayerPage from './pages/PlayerPage'
+import ScoutingPage from './pages/ScoutingPage'
 
 function App() {
   return (
@@ -15,6 +16,11 @@ function App() {
         <Route
           path="/player/:id"
           element={<PlayerPage />}
+        />
+
+        <Route
+          path="/scouting"
+          element={<ScoutingPage />}
         />
       </Routes>
     </AppLayout>
