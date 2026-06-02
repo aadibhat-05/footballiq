@@ -3,7 +3,6 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom'
-
 import AttributeRadar from '../components/dashboard/AttributeRadar'
 import SimilarPlayersPanel from '../components/dashboard/SimilarPlayersPanel'
 import { players } from '../data/players'
@@ -11,6 +10,12 @@ import { generateScoutReport } from '../utils/generateScoutReport'
 import { getSimilarPlayers } from '../utils/getSimilarPlayers'
 import { useState } from 'react'
 import PlayerComparisonCard from '../components/dashboard/PlayerComparisonCard'
+import { useEffect } from 'react'
+import {
+  addToShortlist,
+  removeFromShortlist,
+  isShortlisted,
+} from '../utils/shortlistStorage'
 
 function PlayerPage() {
   const { id } = useParams()
@@ -58,6 +63,17 @@ function PlayerPage() {
       (p) => p.id === comparisonPlayerId
     ) || player
 
+  const [
+    shortlisted,
+    setShortlisted,
+  ] = useState(false)
+  
+  useEffect(() => {
+    setShortlisted(
+      isShortlisted(player.id)
+    )
+  }, [player.id])
+
   return (
     <div className="space-y-8 p-10 text-white">
       {/* TOP NAVIGATION */}
@@ -101,13 +117,37 @@ function PlayerPage() {
       {/* PLAYER HEADER */}
       <div>
         <p className="text-sm uppercase tracking-widest text-green-400">
-          Player Profile
+          Player Profile 
         </p>
-
-        <h1 className="mt-2 text-5xl font-bold">
-          {player.name}
-        </h1>
-
+        <div className="mt-2 flex items-center gap-4">
+          <h1 className="text-5xl font-bold">
+            {player.name}
+          </h1>
+          <button
+            onClick={() => {
+              if (shortlisted) {
+                removeFromShortlist(
+                  player.id
+                )
+                setShortlisted(false)
+              } else {
+                addToShortlist(
+                  player
+                )
+                setShortlisted(true)
+              }
+            }}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+              shortlisted
+                ? 'bg-green-500 text-black'
+                : 'border border-gray-700 bg-gray-900 text-white'
+            }`}
+          >
+            {shortlisted
+              ? '✓ Shortlisted'
+              : '+ Add To Shortlist'}
+          </button>
+        </div>
         <p className="mt-2 text-xl text-gray-400">
           {player.club}
         </p>

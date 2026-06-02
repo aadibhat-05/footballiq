@@ -3,6 +3,7 @@ import AppLayout from './components/layout/AppLayout'
 import HomePage from './pages/HomePage'
 import PlayerPage from './pages/PlayerPage'
 import ScoutingPage from './pages/ScoutingPage'
+import ShortlistsPage from './pages/ShortlistsPage'
 
 function App() {
   return (
@@ -22,6 +23,12 @@ function App() {
           path="/scouting"
           element={<ScoutingPage />}
         />
+
+        <Route
+          path="/shortlists"
+          element={<ShortlistsPage />}
+        />
+
       </Routes>
     </AppLayout>
   )

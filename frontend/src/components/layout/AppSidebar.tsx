@@ -23,9 +23,12 @@ function AppSidebar() {
         >
           Scouting
         </Link>
-        <button className="rounded-lg px-4 py-3 text-left transition hover:bg-gray-800">
+        <Link
+          to="/shortlists"
+          className="rounded-lg px-4 py-3 text-left transition hover:bg-gray-800"
+        >
           Shortlists
-        </button>
+        </Link>
       </nav>
     </aside>
   )
