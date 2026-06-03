@@ -14,9 +14,12 @@ function AppSidebar() {
         >
           Dashboard
         </Link>
-        <button className="rounded-lg px-4 py-3 text-left transition hover:bg-gray-800">
+        <Link
+        to="/players"
+        className="rounded-lg px-4 py-3 text-left transition hover:bg-gray-800"
+        >
           Players
-        </button>
+        </Link>
         <Link
           to="/scouting"
           className="rounded-lg px-4 py-3 text-left transition hover:bg-gray-800"

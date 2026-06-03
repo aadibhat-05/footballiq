@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import PlayerPage from './pages/PlayerPage'
 import ScoutingPage from './pages/ScoutingPage'
 import ShortlistsPage from './pages/ShortlistsPage'
+import PlayersPage from './pages/Playerspage.tsx'
 
 function App() {
   return (
@@ -29,6 +30,11 @@ function App() {
           element={<ShortlistsPage />}
         />
 
+        <Route
+        path="/players"
+        element={<PlayersPage />}
+        />
+      
       </Routes>
     </AppLayout>
   )
