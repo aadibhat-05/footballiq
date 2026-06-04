@@ -1,9 +1,7 @@
 import { useState } from 'react'
-
 import PlayerAnalysisPanel from '../components/dashboard/PlayerAnalysisPanel'
 import StatsCard from '../components/dashboard/StatsCard'
 import PlayerCard from '../components/player/playercard'
-
 import { players } from '../data/players'
 
 function PlayersPage() {
@@ -29,9 +27,11 @@ function PlayersPage() {
 
   const positions = [
     'All',
-    'Central Midfielder',
-    'Defensive Midfielder',
-    'Attacking Midfielder',
+    ...new Set(
+      players.map(
+        (player) => player.position
+      )
+    ),
   ]
   
   const sortOptions = [
@@ -112,13 +112,11 @@ function PlayersPage() {
         </p>
 
         <h1 className="text-5xl font-bold tracking-tight text-white">
-          FootballIQ
+          Players Database 
         </h1>
 
         <p className="mt-4 max-w-2xl text-lg text-gray-400">
-          Analyze elite football talent,
-          compare tactical profiles,
-          and build data-driven scouting reports.
+          Search, filter and evaluate player profiles across multiple leagues.
         </p>
 
         {/* SEARCH */}
@@ -184,23 +182,23 @@ function PlayersPage() {
       {/* STATS */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         <StatsCard
-          value="180K+"
-          label="Players Tracked"
+          value={String(players.length)}
+          label="Players Profiled"
         />
 
         <StatsCard
-          value="47"
+          value="7"
           label="Top Leagues"
         />
 
         <StatsCard
-          value="12M"
-          label="Event Datapoints"
+          value={String(players.length * 7)}
+          label="Attribute Datapoints"
         />
 
         <StatsCard
-          value="98.4%"
-          label="Report Accuracy"
+          value="4"
+          label="Scouting Tools"
         />
       </div>
 

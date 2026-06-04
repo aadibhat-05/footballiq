@@ -12,11 +12,22 @@ function PlayerCard({
   isSelected,
   onSelect,
 }: PlayerCardProps) {
+  const initials = player.name
+    .split(' ')
+    .map((word: string) => word[0])
+    .filter(Boolean)
+    
+  const playerInitials =
+    initials.length >= 2
+      ? initials[0] +
+        initials[initials.length - 1]
+      : initials[0]
+
   return (
     <div
       onClick={onSelect}
       className={`
-        w-[280px]
+        w-full
         cursor-pointer
         rounded-2xl
         border
@@ -34,7 +45,11 @@ function PlayerCard({
       `}
     >
       <div className="mb-4 flex items-start justify-between">
-        <div>
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10 font-bold text-green-400">
+            {playerInitials}
+          </div>
+          <div>
           <h2 className="text-2xl font-bold text-white">
             {player.name}
           </h2>
@@ -43,26 +58,46 @@ function PlayerCard({
             {player.club}
           </p>
         </div>
+        </div>
 
         <div className="rounded-full bg-green-500/10 px-3 py-1 text-sm font-semibold text-green-400">
           {player.rating}
         </div>
       </div>
 
-      <div className="space-y-2 text-sm text-gray-300">
-        <p>
-          Position:{' '}
-          <span className="text-white">
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div>
+          <p className="text-gray-500">
+            Position
+          </p>
+          <p className="text-white">
             {player.position}
-          </span>
-        </p>
-
-        <p>
-          Age:{' '}
-          <span className="text-white">
+          </p>
+        </div>
+        <div>
+          <p className="text-gray-500">
+            Age
+          </p>
+          <p className="text-white">
             {player.age}
-          </span>
-        </p>
+          </p>
+        </div>
+        <div>
+          <p className="text-gray-500">
+            Value
+          </p>
+          <p className="text-green-400">
+            {player.marketValue}
+          </p>
+        </div>
+        <div>
+          <p className="text-gray-500">
+            Archetype
+          </p>
+          <p className="text-white">
+            {player.archetype}
+          </p>
+        </div>
       </div>
 
       <Link
