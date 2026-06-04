@@ -11,19 +11,68 @@ function ShortlistsPage() {
     shortlistedPlayers,
     setShortlistedPlayers,
   ] = useState(
-    players.filter((player) =>
+    players
+      .filter((player) =>
         getShortlistIds().includes(
             player.id
         )
-    )
+      )
+      .sort(
+        (a,b) =>
+          b.rating - a.rating 
+      )
 )
 
   return (
     <div className="space-y-8 p-10 text-white">
       <div>
-        <h1 className="text-4xl font-bold">
+        <p className="text-sm uppercase tracking-widest text-green-400">
+          Recruitment Board
+        </p>
+        <h1 className="mt-2 text-5xl font-bold">
           Shortlists
         </h1>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-gray-800 bg-gray-950 p-5">
+            <p className="text-sm text-gray-500">
+              Players Saved
+            </p>
+            <p className="mt-2 text-3xl font-bold text-green-400">
+              {shortlistedPlayers.length}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-800 bg-gray-950 p-5">
+            <p className="text-sm text-gray-500">
+              Average Rating
+            </p>
+            <p className="mt-2 text-3xl font-bold text-green-400">
+              {shortlistedPlayers.length > 0
+                ? Math.round(
+                  shortlistedPlayers.reduce(
+                    (sum, player) =>
+                      sum + player.rating,
+                    0
+                  ) / shortlistedPlayers.length
+                )
+              : 0}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-800 bg-gray-950 p-5">
+            <p className="text-sm text-gray-500">
+              Clubs Represented
+            </p>
+            <p className="mt-2 text-3xl font-bold text-green-400">
+              {
+                new Set(
+                  shortlistedPlayers.map(
+                    (player) => player.club
+                  )
+                ).size
+              }
+            </p>
+          </div>
+        </div>
 
         <p className="mt-2 text-gray-400">
           Saved scouting targets.
@@ -44,17 +93,53 @@ function ShortlistsPage() {
                 key={player.id}
                 className="rounded-2xl border border-gray-800 bg-gray-950 p-6"
               >
-                <h2 className="text-2xl font-bold">
-                  {player.name}
-                </h2>
-
-                <p className="mt-2 text-gray-400">
-                  {player.club}
-                </p>
-
-                <p className="mt-2 text-green-400">
-                  Rating: {player.rating}
-                </p>
+                <div className="mb-4 flex items-start justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold">
+                      {player.name}
+                    </h2>
+                    <p className="text-gray-400">
+                      {player.club}
+                    </p>
+                  </div>
+                  <div className="rounded-full bg-green-500/10 px-3 py-1 text-sm font-semibold text-green-400">
+                    {player.rating}
+                  </div>
+                </div>
+              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-gray-500">
+                    Position
+                  </p>
+                  <p>
+                    {player.position}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">
+                    Age
+                  </p>
+                  <p>
+                    {player.age}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">
+                    Value
+                  </p>
+                  <p className="text-green-400">
+                    {player.marketValue}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">
+                    Rating
+                  </p>
+                  <p className="text-green-400">
+                    {player.rating}
+                  </p>
+                </div>
+              </div>
 
                 <div className="mt-6 flex gap-3">
                   <Link
