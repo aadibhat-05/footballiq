@@ -17,6 +17,13 @@ function HomePage() {
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 4)
 
+  const totalPlayers = players.length
+  
+  const totalAttributes =
+    players.length * 7
+    
+  const totalTools = 4
+
   return (
     <div>
       <section className="relative overflow-hidden border-b border-gray-800">
@@ -66,7 +73,7 @@ function HomePage() {
               </p>
 
               <p className="mt-2 text-3xl font-bold text-green-400">
-                16
+                {totalPlayers}
               </p>
             </div>
 
@@ -86,7 +93,7 @@ function HomePage() {
               </p>
 
               <p className="mt-2 text-3xl font-bold text-green-400">
-                112
+                {totalAttributes}
               </p>
             </div>
 
@@ -96,7 +103,7 @@ function HomePage() {
               </p>
 
               <p className="mt-2 text-3xl font-bold text-green-400">
-                4
+                {totalTools}
               </p>
             </div>
           </div>
@@ -118,57 +125,79 @@ function HomePage() {
             {
               icon: Search,
               title: 'Player Analysis',
+              route: '/players',
               description:
                 'Detailed player profiles with ratings, attributes and scouting summaries.',
             },
             {
               icon: Scale,
               title: 'Player Comparison',
+              route: '/players',
               description:
                 'Compare two players side by side and identify key advantages.',
             },
             {
               icon: Users,
               title: 'Similar Players',
+              route: '/players',
               description:
                 'Discover players with similar technical and tactical profiles.',
             },
             {
               icon: Target,
               title: 'Transfer Fit Analysis',
+              route: '/scouting',
               description:
                 'Evaluate how well a player fits a club tactical system.',
             },
             {
               icon: Trophy,
               title: 'League Benchmarking',
+              route: '/players',
               description:
                 'Compare talent across Europe’s top leagues.',
             },
             {
               icon: BarChart3,
               title: 'Shortlists',
+              route: '/shortlists',
               description:
                 'Save and organize scouting targets for future evaluation.',
             },
           ].map((item) => (
-            <div
+            <Link
               key={item.title}
-              className="rounded-2xl border border-gray-800 bg-gray-950 p-6 transition hover:border-green-500/40"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10 text-green-400">
-                <item.icon size={18} />
-              </div>
-
-              <h3 className="mt-4 text-lg font-semibold">
-                {item.title}
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-400">
-                {item.description}
-              </p>
-            </div>
-          ))}
+              to={item.route}
+              className="block"
+              >
+                <div
+                  className="
+                    cursor-pointer
+                    rounded-2xl
+                    border
+                    border-gray-800
+                    bg-gray-950
+                    p-6
+                    transition-all
+                    duration-200
+                    hover:-translate-y-1
+                    hover:border-green-500/40
+                  "
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10 text-green-400">
+                    <item.icon size={18} />
+                  </div>
+                  
+                  <h3 className="mt-4 text-lg font-semibold">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-400">
+                    {item.description}
+                  </p>
+                </div>
+            </Link>
+          ))
+        }
         </div>
       </section>
 
