@@ -110,3 +110,33 @@ export function generateScoutReport(
 
   return insights
 }
+
+export function generateSummary(
+  player: Player
+) {
+  if (
+    player.position.includes(
+      'Midfielder'
+    )
+  ) {
+    return `${player.name} is a highly intelligent midfielder who thrives in possession-based systems. His technical quality, decision-making, and ability to progress play make him a valuable asset during both build-up and chance creation phases.`
+  }
+
+  if (
+    player.position.includes(
+      'Striker'
+    )
+  ) {
+    return `${player.name} is an attacking focal point capable of influencing matches through movement, finishing, and penalty-area presence. He offers a consistent goal threat and can serve as the primary reference point in advanced areas.`
+  }
+
+  if (
+    player.position.includes(
+      'Winger'
+    )
+  ) {
+    return `${player.name} is a dynamic wide attacker who excels in progression, ball carrying, and direct attacking actions. His ability to isolate defenders makes him a dangerous option in transition and final-third situations.`
+  }
+
+  return `${player.name} is a versatile footballer with a well-rounded profile and the attributes required to contribute across multiple phases of play.`
+}

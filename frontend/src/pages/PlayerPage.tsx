@@ -6,7 +6,9 @@ import {
 import AttributeRadar from '../components/dashboard/AttributeRadar'
 import SimilarPlayersPanel from '../components/dashboard/SimilarPlayersPanel'
 import { players } from '../data/players'
-import { generateScoutReport } from '../utils/generateScoutReport'
+import { generateScoutReport,
+         generateSummary,
+} from '../utils/generateScoutReport'
 import { getSimilarPlayers } from '../utils/getSimilarPlayers'
 import { useState } from 'react'
 import PlayerComparisonCard from '../components/dashboard/PlayerComparisonCard'
@@ -49,6 +51,9 @@ function PlayerPage() {
 
   const generatedInsights =
     generateScoutReport(player)
+
+  const summary =
+    generateSummary(player)
 
   const similarPlayers =
     getSimilarPlayers(player)
@@ -213,6 +218,9 @@ function PlayerPage() {
         </p>
 
         <div className="mt-5 space-y-4">
+          <p className="mb-6 leading-8 text-gray-300">
+            {summary}
+          </p>
           {generatedInsights.map(
             (insight, index) => (
               <div
