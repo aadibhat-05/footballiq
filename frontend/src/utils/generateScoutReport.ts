@@ -1,5 +1,24 @@
 import type { Player } from '../types/player'
 
+export function getDevelopmentAreas(
+  player: Player
+) {
+  return Object.entries(
+    player.attributes
+  )
+    .filter(
+      ([, value]) => value < 75
+    )
+    .sort(
+      ([, a], [, b]) => a - b
+    )
+    .slice(0, 3)
+    .map(
+      ([attribute]) =>
+        attribute.charAt(0).toUpperCase() +
+        attribute.slice(1)
+    )
+}
 export function generateScoutReport(
   player: Player
 ) {

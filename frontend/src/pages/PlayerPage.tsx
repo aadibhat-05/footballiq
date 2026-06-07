@@ -8,6 +8,7 @@ import SimilarPlayersPanel from '../components/dashboard/SimilarPlayersPanel'
 import { players } from '../data/players'
 import { generateScoutReport,
          generateSummary,
+         getDevelopmentAreas,
 } from '../utils/generateScoutReport'
 import { getSimilarPlayers } from '../utils/getSimilarPlayers'
 import { useState } from 'react'
@@ -54,6 +55,9 @@ function PlayerPage() {
 
   const summary =
     generateSummary(player)
+
+  const developmentAreas =
+    getDevelopmentAreas(player)
 
   const similarPlayers =
     getSimilarPlayers(player)
@@ -216,6 +220,40 @@ function PlayerPage() {
         <p className="text-sm uppercase tracking-widest text-gray-500">
           AI Scout Insights
         </p>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <p className="text-xs uppercase tracking-widest text-gray-500">
+              Tactical Role
+            </p>
+            <p className="mt-2 font-semibold text-green-400">
+              {player.tacticalRole}
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <p className="text-xs uppercase tracking-widest text-gray-500">
+              Archetype
+            </p>
+            <p className="mt-2 font-semibold text-green-400">
+              {player.archetype}
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <p className="text-xs uppercase tracking-widest text-gray-500">
+              Key Strengths
+            </p>
+            <p className="mt-2 text-sm text-gray-300">
+              {player.strengths.join(', ')}
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <p className="text-xs uppercase tracking-widest text-gray-500">
+              Development Areas
+            </p>
+            <p className="mt-2 text-sm text-gray-300">
+              {developmentAreas.join(', ')}
+            </p>
+          </div>
+        </div>
 
         <div className="mt-5 space-y-4">
           <p className="mb-6 leading-8 text-gray-300">

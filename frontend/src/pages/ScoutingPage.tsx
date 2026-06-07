@@ -53,6 +53,18 @@ function ScoutingPage() {
         selectedClub,
     ])
 
+  const [analyzedClub, setAnalyzedClub] =
+    useState<any>(null)
+
+  const [tacticalFit, setTacticalFit] =
+    useState<number | null>(null)
+    
+  const [technicalFit, setTechnicalFit] =
+    useState<number | null>(null)
+    
+  const [physicalFit, setPhysicalFit] =
+    useState<number | null>(null)
+
   function handleAnalyze() {
     const player = players.find(
       (p) => p.id === selectedPlayer
@@ -64,6 +76,29 @@ function ScoutingPage() {
     )
 
     if (!player || !club) return
+
+    const tacticalFit = Math.round(
+      (
+        player.attributes.vision +
+        player.attributes.passing +
+        player.attributes.dribbling
+      ) / 3
+    )
+    
+    const technicalFit = Math.round(
+      (
+        player.attributes.passing +
+        player.attributes.dribbling +
+        player.attributes.shooting
+      ) / 3
+    )
+    
+    const physicalFit = Math.round(
+      (
+        player.attributes.pace +
+        player.attributes.physical
+      ) / 2
+    )
 
     const scores =
       club.priorities.map(
@@ -89,6 +124,10 @@ function ScoutingPage() {
 
     setFitScore(score)
     setReport(generatedReport)
+    setTacticalFit(tacticalFit)
+    setTechnicalFit(technicalFit)
+    setPhysicalFit(physicalFit)
+    setAnalyzedClub(club)
   }
 
   return (
@@ -202,7 +241,7 @@ function ScoutingPage() {
                                 Tactical Fit
                             </p>
                             <p className="text-2xl font-semibold text-white">
-                                {Math.min(fitScore + 3, 100)}%
+                                {tacticalFit}%
                             </p>
                         </div>
                         <div>
@@ -210,7 +249,7 @@ function ScoutingPage() {
                                 Technical Fit
                             </p>
                             <p className="text-2xl font-semibold text-white">
-                                {fitScore}%
+                                {technicalFit}%
                             </p>
                         </div>
                         <div>
@@ -218,7 +257,7 @@ function ScoutingPage() {
                                 Physical Fit
                             </p>
                             <p className="text-2xl font-semibold text-white">
-                                {Math.max(fitScore - 5, 0)}%
+                                {physicalFit}%
                             </p>
                         </div>
                     </div>
@@ -226,6 +265,35 @@ function ScoutingPage() {
             </div>
 
     <div className="rounded-2xl border border-gray-800 bg-gray-950 p-8">
+      <p className="text-sm uppercase tracking-widest text-green-400">
+        Club Profile
+      </p>
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div>
+          <p className="text-xs text-gray-500">
+            Club
+          </p>
+          <p className="text-lg font-semibold">
+            {analyzedClub.clubName}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-500">
+            League
+          </p>
+          <p className="text-lg font-semibold">
+            {analyzedClub.league}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-500">
+            Playing Style
+          </p>
+          <p className="text-lg font-semibold">
+            {analyzedClub.style}
+          </p>
+        </div>
+      </div>
       <p className="text-sm uppercase tracking-widest text-green-400">
         AI Scout Assessment
       </p>
