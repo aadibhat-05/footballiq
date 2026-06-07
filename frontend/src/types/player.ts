@@ -2,6 +2,7 @@ export type Player = {
   id: number
   name: string
   club: string
+  league: string
   position: string
   age: number
   rating: number
