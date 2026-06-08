@@ -222,7 +222,7 @@ export const players: Player[] = [
     id: 8,
     name: 'Alessandro Bastoni',
     club: 'Inter Milan',
-    league: 'Sirie A',
+    league: 'Serie A',
     position: 'Centre Back',
     age: 26,
     rating: 88,
