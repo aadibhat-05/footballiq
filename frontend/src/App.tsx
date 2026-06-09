@@ -4,7 +4,9 @@ import HomePage from './pages/HomePage'
 import PlayerPage from './pages/PlayerPage'
 import ScoutingPage from './pages/ScoutingPage'
 import ShortlistsPage from './pages/ShortlistsPage'
-import PlayersPage from './pages/Playerspage.tsx'
+import PlayersPage from './pages/PlayersPage.tsx'
+
+import TestPage from './pages/TestPage'
 
 function App() {
   return (
@@ -31,9 +33,16 @@ function App() {
         />
 
         <Route
-        path="/players"
-        element={<PlayersPage />}
+          path="/players"
+          element={<PlayersPage />}
         />
+
+
+        <Route
+          path="/test"
+          element={<TestPage />}
+        />
+      
       
       </Routes>
     </AppLayout>

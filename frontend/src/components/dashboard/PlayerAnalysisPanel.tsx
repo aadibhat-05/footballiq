@@ -195,7 +195,7 @@ function PlayerAnalysisPanel({
               {selectedPlayer.strengths.map(
                 (strength) => (
                   <div
-                    key={strength}
+                    key={strength.trim()}
                     className="rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2 text-sm text-green-300"
                   >
                     {strength}

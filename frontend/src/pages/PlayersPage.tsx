@@ -1,8 +1,9 @@
-import { useState } from 'react'
 import PlayerAnalysisPanel from '../components/dashboard/PlayerAnalysisPanel'
 import StatsCard from '../components/dashboard/StatsCard'
 import PlayerCard from '../components/player/playercard'
-import { players } from '../data/players'
+import { useState, useEffect } from 'react'
+import { getPlayers } from '../services/playerService'
+import type { Player } from '../types/player'
 
 function PlayersPage() {
   const [selectedPlayerId, setSelectedPlayerId] =
@@ -19,6 +20,12 @@ function PlayersPage() {
 
   const [sortOption, setSortOption] =
     useState('Highest Rated')  
+
+  const [players, setPlayers] =
+    useState<Player[]>([])
+
+  const [loading, setLoading] =
+    useState(true)
 
   const selectedPlayer =
     players.find(
@@ -102,6 +109,29 @@ function PlayersPage() {
         return 0
     }
   })
+
+  useEffect(() => {
+    async function loadPlayers() {
+      try {
+        const data =
+          await getPlayers()
+        setPlayers(data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPlayers()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="p-10 text-white">
+        Loading players...
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
