@@ -283,6 +283,7 @@ function PlayersPage() {
         {/* ANALYSIS PANEL */}
         <PlayerAnalysisPanel
           selectedPlayer={selectedPlayer}
+          players={players}
           comparePlayerId={comparePlayerId}
           setComparePlayerId={setComparePlayerId}
         />

@@ -1,10 +1,10 @@
-import { players } from '../data/players'
 import type { Player } from '../types/player'
 
 import { calculateSimilarity } from './calculateSimilarity'
 
 export function getSimilarPlayers(
   selectedPlayer: Player,
+  players: Player[],
   limit = 3
 ) {
   return players

@@ -1,27 +1,44 @@
 import { Link } from 'react-router-dom'
-import { players } from '../data/players'
+import { useState, useEffect } from 'react'
+import type { Player } from '../types/player'
+import { getPlayers } from '../services/playerService'
 import {
   getShortlistIds,
   removeFromShortlist,
 } from '../utils/shortlistStorage'
-import { useState } from 'react'
 
 function ShortlistsPage() {
   const [
     shortlistedPlayers,
     setShortlistedPlayers,
-  ] = useState(
-    players
-      .filter((player) =>
-        getShortlistIds().includes(
-            player.id
+  ] = useState<Player[]>([])
+  useEffect(() => {
+    async function loadShortlist() {
+      try {
+        const players =
+          await getPlayers()
+        const shortlistIds =
+          getShortlistIds()
+        const filteredPlayers =
+          players
+            .filter((player) =>
+              shortlistIds.includes(
+                player.id
+              )
+            )
+            .sort(
+              (a, b) =>
+                b.rating - a.rating
+            )
+        setShortlistedPlayers(
+          filteredPlayers
         )
-      )
-      .sort(
-        (a,b) =>
-          b.rating - a.rating 
-      )
-)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadShortlist()
+  }, [])
 
   return (
     <div className="space-y-8 p-10 text-white">

@@ -10,9 +10,40 @@ import {
   BarChart3,
 } from 'lucide-react'
 
-import { players } from '../data/players'
+import { getPlayers } from '../services/playerService'
+import type { Player } from '../types/player'
+import { useState, useEffect } from 'react'
 
 function HomePage() {
+
+  const [players, setPlayers] =
+    useState<Player[]>([])
+    
+  const [loading, setLoading] =
+    useState(true)
+    
+  useEffect(() => {
+    async function loadPlayers() {
+      try {
+        const data = await getPlayers()
+        setPlayers(data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPlayers()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="p-10 text-white">
+        Loading...
+      </div>
+    )
+  }
+
   const featuredPlayers = [...players]
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 4)

@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { players } from '../../data/players'
+
 import type { Player } from '../../types/player'
 
 type PlayerAnalysisPanelProps = {
   selectedPlayer: Player
+  players: Player[]
   comparePlayerId: number | null
   setComparePlayerId: (id: number | null) => void
 }
@@ -20,6 +21,7 @@ const ATTRIBUTES = [
 
 function PlayerAnalysisPanel({
   selectedPlayer,
+  players,
   comparePlayerId,
   setComparePlayerId,
 }: PlayerAnalysisPanelProps) {

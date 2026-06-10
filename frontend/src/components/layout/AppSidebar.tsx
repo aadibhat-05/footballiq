@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
-import { players } from '../../data/players'
+import { getPlayers } from '../../services/playerService'
+import { useEffect, useState } from 'react'
 
 const navItems = [
   { to: '/', label: 'Dashboard' },
@@ -235,6 +236,21 @@ const style = `
 function AppSidebar() {
   const location = useLocation()
 
+  const [playerCount, setPlayerCount] =
+    useState(0)
+    
+  useEffect(() => {
+    async function loadPlayers() {
+      try {
+        const data = await getPlayers()
+        setPlayerCount(data.length)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadPlayers()
+  }, [])
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: style }} />
@@ -312,7 +328,7 @@ function AppSidebar() {
             <div className="fiq-stats-row">
               <div className="fiq-stat">
                 <div className="fiq-stat-label">Players</div>
-                <div className="fiq-stat-value">{players.length}</div>
+                <div className="fiq-stat-value">{playerCount}</div>
               </div>
               <div className="fiq-stat-divider" />
               <div className="fiq-stat">

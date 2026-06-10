@@ -5,7 +5,8 @@ import {
 } from 'react-router-dom'
 import AttributeRadar from '../components/dashboard/AttributeRadar'
 import SimilarPlayersPanel from '../components/dashboard/SimilarPlayersPanel'
-import { players } from '../data/players'
+import { getPlayers } from '../services/playerService'
+import type { Player } from '../types/player'
 import { generateScoutReport,
          generateSummary,
          getDevelopmentAreas,
@@ -23,6 +24,55 @@ import {
 function PlayerPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+
+  const [players, setPlayers] =
+    useState<Player[]>([])
+    
+  const [loading, setLoading] =
+    useState(true)
+
+  const [comparisonPlayerId, setComparisonPlayerId] =
+    useState<number>(0)
+    
+  const [
+    shortlisted,
+    setShortlisted,
+  ] = useState(false)
+
+    useEffect(() => {
+      async function loadPlayers() {
+        try {
+          const data =
+            await getPlayers()
+            
+          setPlayers(data)
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      loadPlayers()
+    }, [])
+
+    useEffect(() => {
+      const currentPlayer =
+        players.find(
+          (p) => p.id === Number(id)
+        )
+      if (!currentPlayer) return
+      setShortlisted(
+        isShortlisted(currentPlayer.id)
+      )
+    }, [players, id])
+
+    if (loading) {
+      return (
+        <div className="p-10 text-white">
+          Loading player...
+        </div>
+      )
+    }
 
   const player = players.find(
     (p) => p.id === Number(id)
@@ -50,6 +100,8 @@ function PlayerPage() {
     )
   }
 
+  
+  
   const generatedInsights =
     generateScoutReport(player)
 
@@ -60,28 +112,28 @@ function PlayerPage() {
     getDevelopmentAreas(player)
 
   const similarPlayers =
-    getSimilarPlayers(player)
-
-  const [comparisonPlayerId, setComparisonPlayerId] =
-    useState<number>(
-      players.find((p) => p.id !== player.id)?.id || player.id
+    getSimilarPlayers(
+      player,
+      players
     )
+
+    if (
+      comparisonPlayerId === 0 &&
+      players.length > 1
+    ) {
+      setComparisonPlayerId(
+        players.find(
+          (p) => p.id !== player.id
+        )?.id || player.id
+      )
+    }
 
   const comparisonPlayer =
     players.find(
       (p) => p.id === comparisonPlayerId
     ) || player
 
-  const [
-    shortlisted,
-    setShortlisted,
-  ] = useState(false)
   
-  useEffect(() => {
-    setShortlisted(
-      isShortlisted(player.id)
-    )
-  }, [player.id])
 
   return (
     <div className="space-y-8 p-10 text-white">
