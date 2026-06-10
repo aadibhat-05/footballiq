@@ -1,4 +1,5 @@
-import { players } from '../data/players'
+import { getPlayers } from '../services/playerService'
+import type { Player } from '../types/player'
 import { clubProfiles } from '../data/clubProfiles'
 import { generateTransferFitReport } from '../utils/generateTransferFitReport'
 import { useState, useEffect } from 'react'
@@ -12,8 +13,36 @@ function ScoutingPage() {
     ),
   ]
 
+  const [players, setPlayers] =
+    useState<Player[]>([])
+
+    useEffect(() => {
+      async function loadPlayers() {
+        try {
+          const data =
+            await getPlayers()
+          setPlayers(data)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+  loadPlayers()
+}, [])
+
   const [selectedPlayer, setSelectedPlayer] =
-    useState(players[0].id)
+    useState<number | null>(null)
+
+    useEffect(() => {
+      if (
+        players.length > 0 &&
+        selectedPlayer === null
+      ) {
+        setSelectedPlayer(
+          players[0].id
+        )
+      }
+    }, [players, selectedPlayer])
 
   const [selectedLeague, setSelectedLeague] =
     useState(leagues[0])
@@ -71,9 +100,12 @@ function ScoutingPage() {
     )
 
     const club = clubProfiles.find(
-      (c) =>
-        c.clubName === selectedClub
+      (c) => c.clubName === selectedClub
     )
+
+    if (!player || !club) return
+
+   
 
     if (!player || !club) return
 
@@ -149,7 +181,7 @@ function ScoutingPage() {
 
         <div className="grid gap-4 md:grid-cols-3">
           <select
-            value={selectedPlayer}
+            value={selectedPlayer ?? ''}
             onChange={(e) =>
               setSelectedPlayer(
                 Number(e.target.value)
