@@ -5,8 +5,9 @@ import PlayerPage from './pages/PlayerPage'
 import ScoutingPage from './pages/ScoutingPage'
 import ShortlistsPage from './pages/ShortlistsPage'
 import PlayersPage from './pages/PlayersPage.tsx'
-
 import TestPage from './pages/TestPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 
 function App() {
   return (
@@ -37,12 +38,20 @@ function App() {
           element={<PlayersPage />}
         />
 
-
         <Route
           path="/test"
           element={<TestPage />}
         />
-      
+
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+        
+        <Route
+          path="/signup"
+          element={<SignupPage />}
+        />
       
       </Routes>
     </AppLayout>

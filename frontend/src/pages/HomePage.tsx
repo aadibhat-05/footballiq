@@ -14,7 +14,21 @@ import { getPlayers } from '../services/playerService'
 import type { Player } from '../types/player'
 import { useState, useEffect } from 'react'
 
+import { supabase } from '../lib/supabase'
+
 function HomePage() {
+
+  useEffect(() => {
+  async function checkUser() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    console.log('CURRENT USER', user)
+  }
+
+  checkUser()
+}, [])
 
   const [players, setPlayers] =
     useState<Player[]>([])
