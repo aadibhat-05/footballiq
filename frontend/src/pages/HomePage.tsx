@@ -16,7 +16,14 @@ import { useState, useEffect } from 'react'
 
 import { supabase } from '../lib/supabase'
 
+import { useAuth } from '../context/AuthContext'
+
 function HomePage() {
+
+const { user } =
+  useAuth()
+
+console.log(user)
 
   useEffect(() => {
   async function checkUser() {

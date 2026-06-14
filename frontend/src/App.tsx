@@ -8,6 +8,7 @@ import PlayersPage from './pages/PlayersPage.tsx'
 import TestPage from './pages/TestPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
   return (
@@ -20,22 +21,38 @@ function App() {
 
         <Route
           path="/player/:id"
-          element={<PlayerPage />}
+          element={
+            <ProtectedRoute>
+              <PlayerPage />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/scouting"
-          element={<ScoutingPage />}
+          element={
+            <ProtectedRoute>
+              <ScoutingPage />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/shortlists"
-          element={<ShortlistsPage />}
+          
+          element={
+            <ProtectedRoute>
+              <ShortlistsPage />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/players"
-          element={<PlayersPage />}
+          element={
+            <ProtectedRoute>
+              <PlayersPage />
+            </ProtectedRoute>}
         />
 
         <Route
