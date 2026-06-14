@@ -1,6 +1,10 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, 
+  useLocation, 
+  useNavigate,
+} from 'react-router-dom'
 import { getPlayers } from '../../services/playerService'
 import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabase'
 
 const navItems = [
   { to: '/', label: 'Dashboard' },
@@ -236,6 +240,8 @@ const style = `
 function AppSidebar() {
   const location = useLocation()
 
+  const navigate = useNavigate()
+
   const [playerCount, setPlayerCount] =
     useState(0)
     
@@ -346,10 +352,19 @@ function AppSidebar() {
 
         {/* Footer */}
         <div className="fiq-footer">
-          <span className="fiq-footer-text">FootballIQ v1.0</span>
-          <span className="fiq-badge">Pro</span>
+          <span className="fiq-footer-text">
+            FootballIQ v1.0
+          </span>
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut()
+              navigate('/login')
+            }}
+            className="fiq-badge"
+          >
+            Logout
+          </button>
         </div>
-
       </aside>
     </>
   )
