@@ -18,7 +18,7 @@ function ShortlistsPage() {
         const players =
           await getPlayers()
         const shortlistIds =
-          getShortlistIds()
+          await getShortlistIds()
         const filteredPlayers =
           players
             .filter((player) =>

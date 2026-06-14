@@ -1,61 +1,77 @@
+import { supabase } from '../lib/supabase'
 import type { Player } from '../types/player'
 
-const STORAGE_KEY =
-  'footballiq-shortlist'
+export async function getShortlistIds() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-export function getShortlistIds() {
-  const stored =
-    localStorage.getItem(
-      STORAGE_KEY
-    )
+  if (!user) return []
 
-  if (!stored) return []
+  const { data, error } =
+    await supabase
+      .from('shortlists')
+      .select('player_id')
+      .eq('user_id', user.id)
 
-  return JSON.parse(stored)
-}
-
-export function isShortlisted(
-  playerId: number
-) {
-  return getShortlistIds().includes(
-    playerId
-  )
-}
-
-export function addToShortlist(
-  player: Player
-) {
-  const current =
-    getShortlistIds()
-
-  if (
-    current.includes(player.id)
-  ) {
-    return
+  if (error) {
+    console.error(error)
+    return []
   }
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify([
-      ...current,
-      player.id,
-    ])
+  return data.map(
+    (item) => item.player_id
   )
 }
 
-export function removeFromShortlist(
+export async function isShortlisted(
   playerId: number
 ) {
-  const current =
-    getShortlistIds()
+  const ids =
+    await getShortlistIds()
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(
-      current.filter(
-        (id: number) =>
-          id !== playerId
-      )
-    )
-  )
+  return ids.includes(playerId)
+}
+
+export async function addToShortlist(
+  player: Player
+) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return
+
+  const { error } =
+    await supabase
+      .from('shortlists')
+      .insert({
+        user_id: user.id,
+        player_id: player.id,
+      })
+
+  if (error) {
+    console.error(error)
+  }
+}
+
+export async function removeFromShortlist(
+  playerId: number
+) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return
+
+  const { error } =
+    await supabase
+      .from('shortlists')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('player_id', playerId)
+
+  if (error) {
+    console.error(error)
+  }
 }

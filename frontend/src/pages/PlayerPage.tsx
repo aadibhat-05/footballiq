@@ -56,14 +56,19 @@ function PlayerPage() {
     }, [])
 
     useEffect(() => {
-      const currentPlayer =
-        players.find(
-          (p) => p.id === Number(id)
-        )
-      if (!currentPlayer) return
-      setShortlisted(
-        isShortlisted(currentPlayer.id)
-      )
+      async function checkShortlist() {
+        const currentPlayer =
+          players.find(
+            (p) => p.id === Number(id)
+          )
+        if (!currentPlayer) return
+        const result =
+          await isShortlisted(
+            currentPlayer.id
+          )
+        setShortlisted(result)
+      }
+      checkShortlist()
     }, [players, id])
 
     if (loading) {
