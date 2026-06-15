@@ -1,9 +1,16 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,
+    useLocation,
+ } from 'react-router-dom'
 import { signIn } from '../services/authService'
 
 function LoginPage() {
   const navigate = useNavigate()
+
+  const location = useLocation()
+
+  const from =
+    location.state?.from?.pathname || '/'
 
   const [email, setEmail] =
     useState('')
@@ -30,7 +37,9 @@ function LoginPage() {
       return
     }
 
-    navigate('/')
+    navigate(from, {
+        replace: true,
+    })
   }
 
   return (
