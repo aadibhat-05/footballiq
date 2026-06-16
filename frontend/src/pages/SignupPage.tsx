@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { signUp } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
+import { Navigate } from 'react-router-dom'
 
 function SignupPage() {
   const [email, setEmail] =
@@ -7,6 +9,8 @@ function SignupPage() {
 
   const [password, setPassword] =
     useState('')
+
+  const { user } = useAuth()
 
   const [message, setMessage] =
     useState('')
@@ -33,7 +37,15 @@ function SignupPage() {
       'Account created successfully'
     )
   }
-
+  if (user) {
+    return (
+      <Navigate
+        to="/dashboard"
+        replace
+      />
+    )
+  }
+  
   return (
     <div className="p-10 text-white">
       <h1 className="mb-6 text-4xl font-bold">

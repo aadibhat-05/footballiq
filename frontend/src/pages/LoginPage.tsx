@@ -3,6 +3,7 @@ import { useNavigate,
     useLocation,
  } from 'react-router-dom'
 import { signIn } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ function LoginPage() {
   const location = useLocation()
 
   const from =
-    location.state?.from?.pathname || '/'
+    location.state?.from?.pathname || '/dashboard'
 
   const [email, setEmail] =
     useState('')
@@ -18,12 +19,14 @@ function LoginPage() {
   const [password, setPassword] =
     useState('')
 
+  const { user } = useAuth()
+
   const [message, setMessage] =
     useState('')
 
   async function handleLogin(
     e: React.FormEvent
-  ) {
+  ){
     e.preventDefault()
 
     const { error } =
@@ -40,6 +43,10 @@ function LoginPage() {
     navigate(from, {
         replace: true,
     })
+  }
+  if (user) {
+    navigate('/dashboard')
+    return null
   }
 
   return (

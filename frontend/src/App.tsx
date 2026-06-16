@@ -9,17 +9,23 @@ import TestPage from './pages/TestPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import LandingPage from './pages/LandingPage'
 
 function App() {
   return (
     <AppLayout>
       <Routes>
         <Route
-          path="/"
+          path="/dashboard"
           element={
           <ProtectedRoute>
             <HomePage />
           </ProtectedRoute>}
+        />
+
+        <Route
+          path="/"
+          element={<LandingPage />}
         />
 
         <Route

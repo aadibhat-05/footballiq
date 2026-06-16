@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 
 const navItems = [
-  { to: '/', label: 'Dashboard' },
+  { to: '/dashboard', label: 'Dashboard' },
   { to: '/players', label: 'Players' },
   { to: '/scouting', label: 'Scouting' },
   { to: '/shortlists', label: 'Shortlists' },
