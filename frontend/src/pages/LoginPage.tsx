@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { useNavigate,
     useLocation,
  } from 'react-router-dom'
-import { signIn } from '../services/authService'
+import { signIn,
+    signInWithGoogle,
+ } from '../services/authService'
 import { useAuth } from '../context/AuthContext'
 
 function LoginPage() {
@@ -78,6 +80,16 @@ function LoginPage() {
           }
           className="w-full rounded-xl border border-gray-800 bg-gray-950 p-3"
         />
+
+        <button
+          type="button"
+          onClick={async () => {
+            await signInWithGoogle()
+          }}
+          className="w-full rounded-xl border border-gray-700 bg-gray-900 p-3"
+        >
+            Continue with Google
+        </button>
 
         <button
           type="submit"

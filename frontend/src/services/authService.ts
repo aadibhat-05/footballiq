@@ -20,6 +20,16 @@ export async function signIn(
   })
 }
 
+export async function signInWithGoogle() {
+  return await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo:
+        'http://localhost:5173/dashboard',
+    },
+  })
+}
+
 export async function signOut() {
   return await supabase.auth.signOut()
 }
