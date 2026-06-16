@@ -358,7 +358,7 @@ function AppSidebar() {
           <button
             onClick={async () => {
               await supabase.auth.signOut()
-              navigate('/login')
+              navigate('/')
             }}
             className="fiq-badge"
           >
