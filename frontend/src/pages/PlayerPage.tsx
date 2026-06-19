@@ -20,9 +20,17 @@ import {
   removeFromShortlist,
   isShortlisted,
 } from '../utils/shortlistStorage'
+import type { ScoutNote } from '../services/scoutNotesService'
+import {
+  getNotesForPlayer,
+  addNote,
+  deleteNote,
+} from '../services/scoutNotesService'
+
 
 function PlayerPage() {
   const { id } = useParams()
+
   const navigate = useNavigate()
 
   const [players, setPlayers] =
@@ -33,6 +41,22 @@ function PlayerPage() {
 
   const [comparisonPlayerId, setComparisonPlayerId] =
     useState<number>(0)
+
+  const [notes, setNotes] =
+    useState<ScoutNote[]>([])
+  
+  const [newNote, setNewNote] =
+    useState('')
+    
+  const [notesLoading, setNotesLoading] =
+    useState(true)
+
+  const player = players.find(
+    (p) => p.id === Number(id)
+  )
+
+  const [showNotes, setShowNotes] =
+   useState(false)
     
   const [
     shortlisted,
@@ -71,6 +95,24 @@ function PlayerPage() {
       checkShortlist()
     }, [players, id])
 
+  useEffect(() => {
+    async function loadNotes() {
+      if (!player) return
+      try {
+        const data =
+          await getNotesForPlayer(
+            player.id
+          )
+        setNotes(data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setNotesLoading(false)
+      }
+    }
+    loadNotes()
+  }, [player])
+
     if (loading) {
       return (
         <div className="p-10 text-white">
@@ -78,10 +120,6 @@ function PlayerPage() {
         </div>
       )
     }
-
-  const player = players.find(
-    (p) => p.id === Number(id)
-  )
 
   const currentIndex = players.findIndex(
     (p) => p.id === Number(id)
@@ -189,34 +227,128 @@ function PlayerPage() {
           <h1 className="text-5xl font-bold">
             {player.name}
           </h1>
-          <button
-            onClick={() => {
-              if (shortlisted) {
-                removeFromShortlist(
-                  player.id
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                if (shortlisted) {
+                  removeFromShortlist(
+                    player.id
+                  )
+                  setShortlisted(false)
+                } else {
+                  addToShortlist(
+                    player
+                  )
+                  setShortlisted(true)
+                }
+              }}
+              className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                shortlisted
+                  ? 'bg-green-500 text-black'
+                  : 'border border-gray-700 bg-gray-900 text-white'
+                }`}
+              >
+                {shortlisted
+                  ? '✓ Shortlisted'
+                  : '+ Add To Shortlist'}
+            </button>
+            <button
+              onClick={() =>
+                setShowNotes(
+                  !showNotes
                 )
-                setShortlisted(false)
-              } else {
-                addToShortlist(
-                  player
-                )
-                setShortlisted(true)
               }
-            }}
-            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
-              shortlisted
-                ? 'bg-green-500 text-black'
-                : 'border border-gray-700 bg-gray-900 text-white'
-            }`}
-          >
-            {shortlisted
-              ? '✓ Shortlisted'
-              : '+ Add To Shortlist'}
-          </button>
+              className="rounded-xl border border-gray-700 bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition hover:border-green-500"
+            >
+              📝 Notes
+            </button>
+          </div>
         </div>
         <p className="mt-2 text-xl text-gray-400">
           {player.club}
         </p>
+        {showNotes && (
+          <div className="mt-6 rounded-2xl border border-gray-800 bg-gray-950 p-5">
+            <h3 className="mb-4 text-lg font-semibold text-white">
+              Scout Notes
+            </h3>
+            <textarea
+              value={newNote}
+              onChange={(e) =>
+                setNewNote(
+                  e.target.value
+                )
+              }
+              placeholder="Write your scouting observations..."
+              className="min-h-[120px] w-full rounded-xl border border-gray-800 bg-gray-900 p-3 text-white"
+            />
+            <button
+              onClick={async () => {
+                if (!newNote.trim())
+                  return
+                try {
+                  await addNote(
+                    player.id,
+                    newNote
+                  )
+                  const updatedNotes =
+                    await getNotesForPlayer(
+                      player.id
+                    )
+                  setNotes(
+                    updatedNotes
+                  )
+                  setNewNote('')
+                } catch (error) {
+                  console.error(error)
+                }
+              }}
+              className="mt-3 rounded-xl bg-green-500 px-4 py-2 font-semibold text-black"
+            >
+              Save Note
+            </button>
+            <div className="mt-6 space-y-3">
+              {notes.map((note) => (
+                <div
+                  key={note.id}
+                  className="rounded-xl border border-gray-800 bg-gray-900 p-3"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <p className="text-white">
+                      {note.note}
+                    </p>
+                    <button
+                      onClick={async () => {
+                        try {
+                          await deleteNote(
+                            note.id
+                          )
+                          const updatedNotes =
+                            await getNotesForPlayer(
+                              player.id
+                            )
+                            setNotes(
+                              updatedNotes
+                            )
+                          } catch (error) {
+                            console.error(error)
+                          }
+                        }}
+                        className="text-sm text-red-400 hover:text-red-300"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                    <p className="mt-2 text-xs text-gray-500">
+                      {new Date(
+                        note.created_at
+                      ).toLocaleString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+          </div>
+        )}
       </div>
 
       {/* PLAYER INFO GRID */}
