@@ -47,9 +47,6 @@ function PlayerPage() {
   
   const [newNote, setNewNote] =
     useState('')
-    
-  const [notesLoading, setNotesLoading] =
-    useState(true)
 
   const player = players.find(
     (p) => p.id === Number(id)
@@ -106,9 +103,7 @@ function PlayerPage() {
         setNotes(data)
       } catch (error) {
         console.error(error)
-      } finally {
-        setNotesLoading(false)
-      }
+      } 
     }
     loadNotes()
   }, [player])
