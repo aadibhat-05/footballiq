@@ -25,6 +25,7 @@ import {
   getNotesForPlayer,
   addNote,
   deleteNote,
+  updateNote,
 } from '../services/scoutNotesService'
 
 // --- Presentational helpers (display-only, no business logic) -------------
@@ -90,6 +91,12 @@ function PlayerPage() {
     useState<ScoutNote[]>([])
   
   const [newNote, setNewNote] =
+    useState('')
+
+  const [editingNoteId, setEditingNoteId] =
+    useState<number | null>(null)
+    
+  const [editingText, setEditingText] =
     useState('')
 
   const player = players.find(
@@ -193,8 +200,6 @@ function PlayerPage() {
       </div>
     )
   }
-
-  
   
   const generatedInsights =
     generateScoutReport(player)
@@ -522,25 +527,90 @@ function PlayerPage() {
                     className="flex items-start justify-between gap-4 py-3.5 first:pt-0"
                   >
                     <div>
-                      <p className="text-sm leading-6 text-gray-200">
-                        {note.note}
-                      </p>
+                      {editingNoteId === note.id ? (
+                        <div className="space-y-3">
+                          <textarea
+                            value={editingText}
+                            onChange={(e) =>
+                              setEditingText(
+                                e.target.value
+                              )
+                            }
+                            className="w-full rounded-lg border border-[#1d2026] bg-[#08090b] p-3 text-sm text-white"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                try {
+                                  await updateNote(
+                                    note.id,
+                                    editingText
+                                  )
+                                  const updatedNotes =
+                                    await getNotesForPlayer(
+                                      player.id
+                                    )
+                                  setNotes(
+                                    updatedNotes
+                                  )
+                                  setEditingNoteId(
+                                    null
+                                  )
+                                } catch (error) {
+                                  console.error(error)
+                                }
+                              }}
+                              className="rounded bg-green-500 px-3 py-1 text-xs font-semibold text-black"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() =>
+                                setEditingNoteId(
+                                  null
+                                )
+                              }
+                              className="rounded border border-gray-700 px-3 py-1 text-xs"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-sm leading-6 text-gray-200">
+                          {note.note}
+                        </p>
+                      )}
                       <p className="pp-mono mt-1.5 text-[11px] text-gray-600">
                         {new Date(
                           note.created_at
                         ).toLocaleString()}
                       </p>
                     </div>
-                    <button
-                      onClick={async () => {
-                        try {
-                          await deleteNote(
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          setEditingNoteId(
                             note.id
                           )
-                          const updatedNotes =
-                            await getNotesForPlayer(
-                              player.id
+                          setEditingText(
+                            note.note
+                          )
+                        }}
+                        className="shrink-0 text-xs font-medium text-green-400/70 transition hover:text-green-400"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={async () => {
+                          try {
+                            await deleteNote(
+                              note.id
                             )
+                            const updatedNotes =
+                              await getNotesForPlayer(
+                                player.id
+                              )
                             setNotes(
                               updatedNotes
                             )
@@ -552,6 +622,7 @@ function PlayerPage() {
                       >
                         Delete
                       </button>
+                    </div>
                     </div>
                   ))}
                 </div>

@@ -62,3 +62,16 @@ export async function deleteNote(
 
   if (error) throw error
 }
+
+export async function updateNote(
+  noteId: number,
+  note: string
+) {
+  const { error } =
+    await supabase
+      .from('scout_notes')
+      .update({ note })
+      .eq('id', noteId)
+
+  if (error) throw error
+}
