@@ -1,6 +1,6 @@
 import type { Player } from '../../types/player'
 import { Link } from 'react-router-dom'
-
+import { formatMarketValue } from '../../utils/formatMarketValue'
 type PlayerCardProps = {
   player: Player
   isSelected: boolean
@@ -87,7 +87,7 @@ function PlayerCard({
             Value
           </p>
           <p className="text-green-400">
-            {player.marketValue}
+            {formatMarketValue(player.marketValue)}
           </p>
         </div>
         <div>

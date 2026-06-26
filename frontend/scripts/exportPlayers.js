@@ -37,7 +37,7 @@ const rows = players.map((player) => [
   player.archetype,
   player.nationality,
   player.preferredFoot,
-  player.marketValue,
+  formatMarketValue(player.marketValue),
   player.attributes.pace,
   player.attributes.passing,
   player.attributes.dribbling,

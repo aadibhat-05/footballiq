@@ -6,6 +6,7 @@ import {
   getShortlistIds,
   removeFromShortlist,
 } from '../utils/shortlistStorage'
+import { formatMarketValue } from '../utils/formatMarketValue'
 
 function ShortlistsPage() {
   const [
@@ -145,7 +146,7 @@ function ShortlistsPage() {
                     Value
                   </p>
                   <p className="text-green-400">
-                    {player.marketValue}
+                    {formatMarketValue(player.marketValue)}
                   </p>
                 </div>
                 <div>

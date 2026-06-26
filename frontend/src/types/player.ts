@@ -12,7 +12,7 @@ export type Player = {
   archetype: string
   nationality: string
   preferredFoot: string
-  marketValue: string
+  marketValue: number
   attributes: {
     pace: number
     passing: number

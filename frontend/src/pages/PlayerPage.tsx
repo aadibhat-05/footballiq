@@ -27,6 +27,7 @@ import {
   deleteNote,
   updateNote,
 } from '../services/scoutNotesService'
+import { formatMarketValue } from '../utils/formatMarketValue'
 
 // --- Presentational helpers (display-only, no business logic) -------------
 
@@ -466,7 +467,7 @@ function PlayerPage() {
 
               <div className="pp-stamp rounded px-3 py-2 text-right">
                 <p className="pp-mono text-[9px] uppercase tracking-[0.2em] opacity-70">Market Value</p>
-                <p className="pp-mono text-lg font-bold">{player.marketValue}</p>
+                <p className="pp-mono text-lg font-bold">{formatMarketValue(player.marketValue)}</p>
               </div>
             </div>
           </div>

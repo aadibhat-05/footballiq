@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { formatMarketValue } from '../../utils/formatMarketValue'
 import type { Player } from '../../types/player'
 
 type PlayerAnalysisPanelProps = {
@@ -116,7 +116,7 @@ function PlayerAnalysisPanel({
               </p>
 
               <p className="mt-2 text-lg font-semibold text-green-400">
-                {selectedPlayer.marketValue}
+                {formatMarketValue(selectedPlayer.marketValue)}
               </p>
             </div>
 
